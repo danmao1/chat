@@ -10,7 +10,22 @@
 
 void chat(int sockfd){
     char buffer[1000];
-    
+    int n;
+    while(1){
+        memset(buffer,0,sizeof(buffer));
+        read(sockfd, buffer, sizeof(buffer));
+        printf("From client: %s\n", buffer);
+        memset(buffer,0,sizeof(buffer));
+        n=0;
+        while((buffer[n++] = getchar()) != '\n');
+        write(sockfd, buffer, sizeof(buffer));
+        printf("From Server : %s", buffer);
+        if ((strncmp(buffer, "quit", 4)) == 0) {
+            printf("Client Exit...\n");
+            break;
+        }
+        
+    }
 }
 
 int main(int argc, char* argv[]){
@@ -40,6 +55,8 @@ int main(int argc, char* argv[]){
     printf("Waiting for incoming connection...\n");
     int clientFD = accept(sockFD,NULL,0);
     printf("User has connected\n");
+    chat(sockFD);
+    close(sockFD);
     
 
 

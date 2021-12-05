@@ -25,7 +25,7 @@ void* chat(void* args){
         }
         
     }
-    return NULL;
+    
 }
 
 int main (int argc,char* argv[]){

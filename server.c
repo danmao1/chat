@@ -10,7 +10,8 @@
 #include <errno.h>
 
 int sockFD;
-int users[100];
+char names[50][50];
+int users[50];
 int numUsers;
 void chat(){
     char buffer[1000];
@@ -20,27 +21,32 @@ void chat(){
         
        
         memset(buffer,0,sizeof(buffer));
-        char buffer[ 1024 ];
-	    memset( buffer, 0, 1024 );
+	    memset( buffer, 0, 1000 );
         
         for(int i=0;i<numUsers;i++){
-            int bytesRead = read( users[i], buffer, 1024 );
-            buffer[bytesRead] = '\0';
+            if(users[i]!=0){
+                int bytesRead = read( users[i], buffer, 1000 );
+                buffer[bytesRead] = '\0';
+                if(bytesRead==-1){
+                    
+                }
+                if(bytesRead > sizeof(buffer[0])){
+                    printf("%s: %s\n",names, buffer );
+                }
+            }
         }
 
-        printf("User: %s\n", buffer );
+        
         if ((strncmp(buffer, "quit", 4)) == 0) {
             printf("Client Exit...\n");
             break;
         }
         users[numUsers]=accept4(sockFD,NULL,0);
         if(users[numUsers]==-1){
-            if( errno == EAGAIN || errno==EWOULDBLOCK){
-                
-            }
-            else {
+            if( errno != EAGAIN || errno != EWOULDBLOCK){
                 perror("Error in accept\n");
             }
+            
         }
         else{
             numUsers++;
@@ -53,8 +59,13 @@ int main(int argc, char* argv[]){
         printf("Usage: ./server <port number> \n");
         return 0;
     }
+    
     int portNum= atoi(argv[1]);
     numUsers=0;
+    memset(users,0,sizeof(users));
+    for(int i=0;i<50;i++){
+        strcpy(names[i], "User");
+    }
     sockFD = socket(AF_INET, SOCK_STREAM  ,0);
 
     if(sockFD== -1){

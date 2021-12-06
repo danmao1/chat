@@ -66,7 +66,7 @@ int main(int argc, char* argv[]){
     for(int i=0;i<50;i++){
         strcpy(names[i], "User");
     }
-    sockFD = socket(AF_INET, SOCK_STREAM  ,0);
+    sockFD = socket(AF_INET, SOCK_STREAM || SOCK_NONBLOCK  ,0);
 
     if(sockFD== -1){
         perror("Could not create socket\n");

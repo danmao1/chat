@@ -57,14 +57,14 @@ int main (int argc,char* argv[]){
 		perror("Could not connect to server\n");
 		return -1;
 	}
-    for(int i=0;i<2;i++){
+    for(int i=0;i<3;i++){
         
         int pthread	= pthread_create( &tid[i], NULL, chat, NULL );
         if (pthread!=0){
             printf("Unsuccessful thread\n");
         }
     }
-    for(int i=0;i<2;i++){
+    for(int i=0;i<3;i++){
         
         int join	= pthread_join( tid[i], NULL);
         if (join!=0){

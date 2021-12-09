@@ -38,8 +38,18 @@ void* readChat(void* args){// separate thread functions by write and read
     int n;
     while(1){
         memset(buffer,0,sizeof(buffer));
-        read(sockFD, buffer, sizeof(buffer));
-        printf("%s\n",buffer);
+        n = read(sockFD, buffer, sizeof(buffer));
+        if( n==0){
+            printf("server shut down unexpectedly.\n");
+            exit(0);
+        }
+        else if(n==-1){
+            printf("%s quit\n",name);
+            exit(0);
+        }
+        else{
+            printf("%s\n",buffer);
+        }
         
         
     }

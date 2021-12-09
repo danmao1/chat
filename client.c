@@ -31,6 +31,9 @@ void* writeChat(void* args){// separate thread functions by write and read
             strcpy(name,temp);
 
         }
+        else if((strncmp(buffer,"quit",4))==0){
+            exit(0);
+        }
     }
     
 }
@@ -127,3 +130,4 @@ int main (int argc,char* argv[]){
 
     return 0;
 }
+

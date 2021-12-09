@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 int sockFD;
+char name[50];
 char buffer[1000];
 void* writeChat(void* args){// separate thread functions by write and read
     int n;
@@ -16,9 +17,19 @@ void* writeChat(void* args){// separate thread functions by write and read
         n=0;
         while((buffer[n++] = getchar()) != '\n');
         write(sockFD, buffer, sizeof(buffer));
-        memset(buffer,0,sizeof(buffer));
-        
-        
+        if ((strncmp(buffer,"name",4))==0){
+            char temp[50];
+            int index=0;
+            
+            for (int j=5;j<1000;j++){
+                temp[index]+=buffer[j];
+                if (buffer[j]=='\0'){
+                    break;
+                }
+            }
+            strcpy(name,temp);
+
+        }
     }
     
 }
@@ -28,10 +39,8 @@ void* readChat(void* args){// separate thread functions by write and read
     while(1){
         memset(buffer,0,sizeof(buffer));
         read(sockFD, buffer, sizeof(buffer));
-        if ((strncmp(buffer, "quit", 4)) == 0) {
-            printf("Client Exit...\n");
-            break;
-        }
+        printf("%s\n",buffer);
+        
         
     }
     
@@ -67,15 +76,7 @@ int main (int argc,char* argv[]){
 		perror("Could not connect to server\n");
 		return -1;
 	}
-    for(int i=0;i<2;i++){
-        
-        int pthread	= pthread_create( &tidWrite[i], NULL, writeChat, NULL );
-        if (pthread!=0){
-            printf("Unsuccessful thread\n");
-        }
-        
-
-    }
+    strcpy(name,"User");
     for(int i=0;i<2;i++){
         
         int pthread	= pthread_create( &tidRead[i], NULL, readChat, NULL );
@@ -87,7 +88,17 @@ int main (int argc,char* argv[]){
     }
     for(int i=0;i<2;i++){
         
-        int join	= pthread_join( tidWrite[i], NULL);
+        int pthread	= pthread_create( &tidWrite[i], NULL, writeChat, NULL );
+        if (pthread!=0){
+            printf("Unsuccessful thread\n");
+        }
+        
+
+    }
+    
+    for(int i=0;i<2;i++){
+        
+        int join = pthread_join( tidWrite[i], NULL);
         if (join!=0){
             printf("Thread not joined\n");
         }
@@ -95,7 +106,7 @@ int main (int argc,char* argv[]){
     
     for(int i=0;i<2;i++){
         
-        int join	= pthread_join( tidRead[i], NULL);
+        int join = pthread_join( tidRead[i], NULL);
         if (join!=0){
             printf("Thread not joined\n");
         }

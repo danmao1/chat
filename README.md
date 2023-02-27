@@ -1,2 +1,2 @@
-# Group9
+# Simple chat in C
 

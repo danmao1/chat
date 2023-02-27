@@ -11,26 +11,7 @@
 #include <string.h>
 #include <errno.h>
 
-//GRADING NOTE: Successfully transmits messages to multiple clients.
-//GRADING NOTE: Successfully connects three clients.
-//GRADING NOTE: Successfully connects new clients after others quit.
-//GRADING NOTE: Successfully allows name changes and transmits names
-// with messages.
-//GRADING NOTE: Successfully allows clients to quit with keyword.
-//Does not respond to close messages such as "quite right"
 
-//GRADING NOTE: After a short conversation, the system appeared to become 
-//confused over which name belonged to which client, and would send messages
-//as though they were coming from multiple client simultaneously. -5 points
-
-//GRADING NOTE: After a client crashed, some other clients were unable
-//to communicate. Newly connected clients were fine. This plus the above
-//makes me think that your linked list / client tracking has got a bug
-//somewhere.
-
-//GRADING NOTE: If the server crashes then the clients do not notice
-// or disconnect. If a client crashes then the server terminates.
-// The server in particular should survive client errors. -5 points
 
 //boradcast for all function
 int sockFD;
